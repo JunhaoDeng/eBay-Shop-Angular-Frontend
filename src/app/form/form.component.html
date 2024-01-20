@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <title>Product Search</title>
+    <style>
+      input.ng-invalid.ng-touched {
+        border: 1px solid red;
+      }
+      /* .container {
+        background-color: rgb(33, 37, 41);
+        color: white;
+        padding: 20px;
+      } */
+      /* form {
+        padding-left: 25%; /* 可根据需要调整这个值 */
+      /* @media (min-width: 390px) {
+        .container {
+          max-width: 380px;
+          margin-right: auto;
+          margin-left: auto;
+        }
+      } */
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="d-none d-md-block"></div>
+      <div class="d-block d-md-none"><br /></div>
+      <div
+        class="container"
+        style="background-color: rgb(33, 37, 41); color: white; padding: 20px"
+      >
+        <div class="d-none d-md-block">
+          <h2
+            style="
+              font-size: 27px;
+              margin-top: 10px;
+              padding-left: 25.5%;
+              padding-bottom: 20px;
+            "
+          >
+            Product Search
+          </h2>
+        </div>
+        <div class="d-block d-md-none">
+          <h2
+            style="
+              font-size: 25px;
+              margin-top: 10px;
+              padding-left: -55%;
+              padding-bottom: 20px;
+            "
+          >
+            Product Search
+          </h2>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <form #f="ngForm" (submit)="onSubmit($event)">
+              <!-- <div class="mx-auto" style="max-width: 1000px"> -->
+              <div class="form-group row">
+                <label for="keyword" class="col-md-4 col-xs-3">
+                  Keyword<span style="color: red">*</span>
+                </label>
+                <div class="col-md-7 col-xs-7">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="keyword"
+                    name="keyword"
+                    placeholder="Enter Product Name (eg. iPhone 8)"
+                    [(ngModel)]="model.keyword"
+                    #keyword="ngModel"
+                    pattern="^\s*(\w.*)$"
+                    minlength="1"
+                    required
+                  />
+                  <ng-container
+                    *ngIf="
+                      keyword?.errors && (keyword.dirty || keyword.touched)
+                    "
+                  >
+                    <div *ngIf="keyword.errors?.['required']">
+                      <span style="color: red">Please enter a keyword.</span>
+                    </div>
+                    <div *ngIf="keyword.errors?.['pattern']">
+                      <span style="color: red">Please enter a keyword.</span>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 col-xs-3" for="category">Category</label>
+                <div class="col-md-7 col-xs-3">
+                  <!-- class="form-control form-control-sm" -->
+                  <select
+                    class="form-select"
+                    id="category-select"
+                    [(ngModel)]="model.category"
+                    #category="ngModel"
+                    name="category"
+                    style="color: #6c757d; font-size: 16px"
+                  >
+                    <option value="-1" id="-1">All Categories</option>
+                    <option value="550" id="550">Art</option>
+                    <option value="2984" id="2984">Baby</option>
+                    <option value="267" id="267">Books</option>
+                    <option value="11450" id="11450">
+                      Clothing, Shoes & Accessories
+                    </option>
+                    <option value="58058" id="58058">
+                      Computers/Tablets & Networking
+                    </option>
+                    <option value="26395" id="26395">Health & Beauty</option>
+                    <option value="11233" id="11233">Music</option>
+                    <option value="1249" id="1249">
+                      Video Games & Consoles
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 col-xs-3" for="Condition"
+                  >Condition</label
+                >
+                <div class="col-md-7 col-xs-6">
+                  <label class="form-check form-check-inline">
+                    <input
+                      type="checkbox"
+                      style="margin-right: 5px"
+                      name="new"
+                      [(ngModel)]="model.new"
+                      #new="ngModel"
+                      id="new"
+                    />
+                    New
+                  </label>
+                  <label class="form-check form-check-inline">
+                    <input
+                      type="checkbox"
+                      style="margin-right: 5px"
+                      name="used"
+                      id="used"
+                      [(ngModel)]="model.used"
+                      #used="ngModel"
+                    />
+                    Used
+                  </label>
+                  <label class="form-check form-check-inline">
+                    <input
+                      type="checkbox"
+                      style="margin-right: 5px"
+                      name="unspecified"
+                      id="unspecified"
+                      [(ngModel)]="model.unspecified"
+                      #unspecified="ngModel"
+                    />
+                    Unspecified
+                  </label>
+                </div>
+              </div>
+
+              <!-- ... other form elements ... -->
+              <div class="form-group row">
+                <label class="col-md-4 col-xs-3" for="shippingOption"
+                  >Shipping Options</label
+                >
+                <div class="col-md-7 col-xs-6">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="local"
+                      [(ngModel)]="model.local"
+                      #local="ngModel"
+                      id="local"
+                    />
+                    Local Pickup
+                  </label>
+                  &nbsp; &nbsp;
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="free"
+                      [(ngModel)]="model.free"
+                      #free="ngModel"
+                      id="free"
+                    />
+                    Free Shipping
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 col-sm-3" for="distance"
+                  >Distance (Miles)</label
+                >
+                <div class="col-md-7 col-xs-3">
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    id="distance"
+                    name="distance"
+                    [(ngModel)]="model.distance"
+                    style="color: #6c757d; font-size: 16px"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 col-xs-3" for="from"
+                  >From<span style="color: red">*</span></label
+                >
+                <div class="col-md-7 col-xs-7">
+                  <label>
+                    <input
+                      type="radio"
+                      name="fromLocation"
+                      [(ngModel)]="model.fromLocation"
+                      #current="ngModel"
+                      value="current"
+                      [checked]="model.fromLocation === 'current'"
+                      (ngModelChange)="onFromLocationChange()"
+                    />
+                    ‘Current Location’
+                  </label>
+                  <!-- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -->
+                  <br />
+                  <label>
+                    <input
+                      type="radio"
+                      name="fromLocation"
+                      [(ngModel)]="model.fromLocation"
+                      #other="ngModel"
+                      value="other"
+                    />
+                    Other. Please specify zip code:
+                  </label>
+
+                  <input
+                    matInput
+                    type="text"
+                    class="form-control mt-2"
+                    id="zip"
+                    name="zip"
+                    [(ngModel)]="model.zip"
+                    (ngModelChange)="onZipChange()"
+                    #zip="ngModel"
+                    pattern="^\d{5}(-\d{4})?$"
+                    required
+                    [disabled]="model.fromLocation !== 'other'"
+                    [matAutocomplete]="autoZipcode"
+                  />
+                  <mat-autocomplete #autoZipcode="matAutocomplete">
+                    <mat-option
+                      *ngFor="let zipcode of filteredZipcodeOptions"
+                      [value]="zipcode"
+                    >
+                      {{ zipcode }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <!-- *ngIf="model.fromLocation === 'other'" -->
+
+                  <!-- <mat-form-field class="mt-2">
+                    <input
+                      [disabled]="model.fromLocation !== 'other'"
+                      type="text"
+                      (input)="get_zipData(model.zip)"
+                      [(ngModel)]="model.zip"
+                      #zip="ngModel"
+                      name="zip"
+                      id="zip"
+                      class="form-control-sm col-sm-12 col-md-12 form-control mat-input-element mat-form-field-autofill-control cdk-text-field-autofill-monitored"
+                      style="padding-left: 0px"
+                      pattern="^\d{5}(-\d{4})?$"
+                      required
+                      matInput
+                      [matAutocomplete]="auto"
+                    />
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option
+                        *ngFor="let option of zips.postalCodes"
+                        [value]="option.postalCode"
+                        (onSelectionChange)="setZip(option)"
+                      >
+                        {{ option.postalCode }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field> -->
+
+                  <!-- <mat-form-field class="mt-2">
+                    <input
+                      matInput
+                      type="text"
+                      [(ngModel)]="model.zip"
+                      id="zip"
+                      name="zip"
+                      [matAutocomplete]="auto"
+                      #zip="ngModel"
+                      pattern="^\d{5}(-\d{4})?$"
+                      required
+                      [disabled]="model.fromLocation !== 'other'"
+                    />
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option
+                        *ngFor="let option of zips?.postalCodes"
+                        [value]="option.postalCode"
+                      >
+                        {{ option.postalCode }}
+                      </mat-option>
+                      <input
+                        [disabled]="model.fromLocation !== 'other'"
+                        type="text"
+                        (input)="get_zipData(model.zip)"
+                        [(ngModel)]="model.zip"
+                        #zip="ngModel"
+                        name="zip"
+                        id="zip"
+                        class="form-control-sm col-sm-12 col-md-12 form-control mat-input-element mat-form-field-autofill-control cdk-text-field-autofill-monitored"
+                        style="padding-left: 0px"
+                        pattern="^\d{5}(-\d{4})?$"
+                        required
+                        matInput
+                        [matAutocomplete]="auto"
+                      />
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option
+                          *ngFor="let option of zips.postalCodes"
+                          [value]="option.postalCode"
+                          (onSelectionChange)="setZip(option)"
+                        >
+                          {{ option.postalCode }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-autocomplete>
+                  </mat-form-field> -->
+
+                  <!-- <mat-form-field class="mt-2" *ngIf="model.fromLocation === 'other'">
+                    <mat-label>Zip code</mat-label>
+                    <input matInput
+                      [formControl]="zipControl"
+                      [matAutocomplete]="auto"
+                      id="zip"
+                      name="zip"
+                      [(ngModel)]="model.zip"
+                      #zip="ngModel"
+                      pattern="^\d{5}(-\d{4})?$"
+                      required
+                    > -->
+                  <!-- <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let option of zips?.postalCodes" [value]="option.postalCode">
+                        {{ option.postalCode }}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="zip.invalid && (zip.dirty || zip.touched)">
+                      <span *ngIf="zip.errors?.['required']">Please enter a zip code.</span>
+                      <span *ngIf="zip.errors?.['pattern']">Please enter a valid zip code.</span>
+                    </mat-error>
+                  </mat-form-field> -->
+
+                  <ng-container
+                    *ngIf="
+                      zip?.errors &&
+                      (model.fromLocation === 'other' ||
+                        zip.dirty ||
+                        zip.touched)
+                    "
+                  >
+                    <div *ngIf="zip.errors?.['required']">
+                      <span style="color: red">Please enter a zip code.</span>
+                    </div>
+                    <div *ngIf="zip.errors?.['pattern']">
+                      <span style="color: red"
+                        >Please enter a valid zip code.</span
+                      >
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-light mr-3"
+                [disabled]="
+                  keyword.errors ||
+                  (model.fromLocation === 'other' && zip.errors)
+                "
+                (click)="showBar()"
+              >
+                <i class="material-icons" style="vertical-align: middle"
+                  >search</i
+                >
+                Search
+              </button>
+              <button
+                (click)="
+                  clearAll(f); $event.stopPropagation(); $event.preventDefault()
+                "
+                class="btn btn-light"
+              >
+                <i class="material-icons" style="vertical-align: middle"
+                  >clear_all</i
+                >
+                Clear
+              </button>
+              <!-- </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <!-- <div class="container"></div> -->
+    <div style="color: white; text-align: center" class="info-form">
+      <button
+        class="btn btn-primary navbar-btn align-content-between"
+        [ngStyle]="{
+          'background-color': !wishActive ? 'black' : 'white',
+          color: !wishActive ? 'white' : 'black',
+          'font-size': '15px',
+          border: 'none',
+          outline: 'none'
+        }"
+        (mousedown)="$event.preventDefault()"
+        (click)="deactivateWishList()"
+      >
+        <!-- get_zipData($event.target.value); -->
+        Result
+      </button>
+      <button
+        class="btn btn-primary navbar-btn align-content-between"
+        [ngStyle]="{
+          'background-color': wishActive ? 'black' : 'white',
+          color: wishActive ? 'white' : 'black',
+          'font-size': '15px',
+          border: 'none',
+          outline: 'none'
+        }"
+        (mousedown)="$event.preventDefault()"
+        (click)="activateWishList()"
+      >
+        Wishlist
+      </button>
+    </div>
+    <br />
+    <div class="container">
+      <div class="progress" [hidden]="!bar">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          aria-valuenow="50"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          style="width: 50%"
+        ></div>
+      </div>
+    </div>
+    <div class="container">
+      <div
+        *ngIf="searchResultNotFound && !wishActive"
+        class="container info-form rounded alert alert-warning"
+      >
+        <p>No Records</p>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <div *ngIf="!bar && searchResult && !searchResultNotFound && !wishActive">
+        <app-search-result
+          *ngIf="submitted"
+          [searchResult]="searchResult"
+        ></app-search-result>
+      </div>
+      <div *ngIf="!bar && wishActive">
+        <app-wish-list></app-wish-list>
+      </div>
+    </div>
+
+    <!-- Include necessary JS files -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

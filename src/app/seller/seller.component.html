@@ -1,0 +1,258 @@
+<body style="margin-top: 5px">
+  <div class="d-none d-md-block">
+    <div style="text-align: center" class="container info-form">
+      <table width="100%" class="table table-dark table-striped">
+        <tbody>
+          <tr *ngIf="storeName">
+            <td colspan="2">{{ capitalLetterWithoutSpace(storeName) }}</td>
+          </tr>
+          <tr *ngIf="feedbackScoreNum != 0">
+            <td style="width: 30%; text-align: left">Feedback Score</td>
+            <td style="width: 60%; text-align: left">
+              {{ feedbackScoreNum }}
+            </td>
+          </tr>
+          <tr *ngIf="positiveFeedbackPercent">
+            <td style="width: 30%; text-align: left">Popularity</td>
+
+            <td>
+              <div class="progress-content" style="position: relative">
+                <div
+                  class="currentValue"
+                  style="
+                    position: absolute;
+                    color: white;
+                    line-height: 3;
+                    padding-left: 6px;
+                  "
+                >
+                  {{ positiveFeedbackPercent }}
+                </div>
+                <round-progress
+                  [current]="positiveFeedbackPercentNum"
+                  [max]="100"
+                  [color]="'green'"
+                  [radius]="25"
+                  [stroke]="2"
+                >
+                </round-progress>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="feedbackRatingStar">
+            <td style="width: 30%; text-align: left">Feedback Rating Star</td>
+            <td
+              style="width: 60%; text-align: left"
+              *ngIf="starColor != 'none' && starOrStarBorder == 'star'"
+            >
+              <span
+                class="material-icons"
+                [style.color]="starColor"
+                style="font-size: 35px"
+              >
+                stars
+              </span>
+            </td>
+            <td
+              style="width: 60%; text-align: left"
+              *ngIf="starColor != 'none' && starOrStarBorder == 'star_border'"
+            >
+              <span
+                class="material-icons"
+                [style.color]="starColor"
+                style="font-size: 35px"
+              >
+                star_border
+              </span>
+            </td>
+            <td
+              style="width: 60%; text-align: left"
+              *ngIf="starColor == 'none'"
+            >
+              <span style="font-size: 35px; color: white"> N/A </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="width: 30%; text-align: left">Top Rated</td>
+            <td style="width: 60%; text-align: left" *ngIf="topRatedSeller">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green; vertical-align: middle"
+                >done</i
+              >
+            </td>
+            <td style="width: 60%; text-align: left" *ngIf="!topRatedSeller">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red; vertical-align: middle"
+                >clear</i
+              >
+            </td>
+          </tr>
+
+          <tr *ngIf="storeName">
+            <td style="width: 30%; text-align: left">Store Name</td>
+            <td style="width: 60%; text-align: left">
+              {{ storeName }}
+            </td>
+          </tr>
+
+          <tr *ngIf="storeURL">
+            <td style="width: 30%; text-align: left">Buy Product At</td>
+            <td style="width: 60%; text-align: left">
+              <a
+                href="{{ storeURL }}"
+                style="color: rgb(142, 209, 231)"
+                target="_blank"
+                >Store</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="d-block d-md-none">
+      <table width="100%" class="table table-dark table-striped">
+        <tbody>
+          <tr *ngIf="storeName">
+            <td width="100%" colspan="2" style="text-align: center">
+              {{ capitalLetterWithoutSpace(storeName) }}
+            </td>
+          </tr>
+          <tr *ngIf="feedbackScoreNum != 0">
+            <td width="100%" style="text-align: left" class="vertical-tds">
+              Feedback Score
+            </td>
+            <td width="100%" style="text-align: left" class="vertical-tds">
+              {{ feedbackScoreNum }}
+            </td>
+          </tr>
+
+          <tr *ngIf="positiveFeedbackPercent">
+            <td width="100%" style="text-align: left" class="vertical-tds">
+              Popularity
+            </td>
+            <td width="100%" class="vertical-tds">
+              <div class="progress-content" style="position: relative">
+                <div
+                  class="currentValue"
+                  style="
+                    position: absolute;
+                    color: white;
+                    line-height: 3;
+                    padding-left: 6px;
+                  "
+                >
+                  {{ positiveFeedbackPercent }}
+                </div>
+                <round-progress
+                  [current]="positiveFeedbackPercentNum"
+                  [max]="100"
+                  [color]="'green'"
+                  [radius]="25"
+                  [stroke]="2"
+                >
+                </round-progress>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="feedbackRatingStar">
+            <td style="width: 100%; text-align: left" class="vertical-tds">
+              Feedback Rating Star
+            </td>
+            <td
+              style="width: 100%; text-align: left"
+              *ngIf="starColor != 'none' && starOrStarBorder == 'star'"
+              class="vertical-tds"
+            >
+              <span
+                class="material-icons"
+                [style.color]="starColor"
+                style="font-size: 35px"
+              >
+                stars
+              </span>
+            </td>
+            <td
+              style="width: 100%; text-align: left"
+              *ngIf="starColor != 'none' && starOrStarBorder == 'star_border'"
+              class="vertical-tds"
+            >
+              <span
+                class="material-icons"
+                [style.color]="starColor"
+                style="font-size: 35px"
+              >
+                star_border
+              </span>
+            </td>
+            <td
+              style="width: 100%; text-align: left"
+              *ngIf="starColor == 'none'"
+              class="vertical-tds"
+            >
+              <span style="font-size: 35px; color: white"> N/A </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="width: 100%; text-align: left" class="vertical-tds">
+              Top Rated
+            </td>
+            <td
+              style="width: 100%; text-align: left"
+              *ngIf="topRatedSeller"
+              class="vertical-tds"
+            >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green; vertical-align: middle"
+                >done</i
+              >
+            </td>
+            <td
+              style="width: 100%; text-align: left"
+              *ngIf="!topRatedSeller"
+              class="vertical-tds"
+            >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red; vertical-align: middle"
+                >clear</i
+              >
+            </td>
+          </tr>
+
+          <tr *ngIf="storeName">
+            <td style="width: 100%; text-align: left" class="vertical-tds">
+              Store Name
+            </td>
+            <td style="width: 100%; text-align: left" class="vertical-tds">
+              {{ storeName }}
+            </td>
+          </tr>
+
+          <tr *ngIf="storeURL">
+            <td style="width: 100%; text-align: left" class="vertical-tds">
+              Buy Product At
+            </td>
+            <td style="width: 100%; text-align: left" class="vertical-tds">
+              <a
+                href="{{ storeURL }}"
+                style="color: rgb(142, 209, 231)"
+                target="_blank"
+                >Store</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>

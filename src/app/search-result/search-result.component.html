@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic Bootstrap Template</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </head>
+  <body style="margin-top: 30px">
+    <div class="container">
+      <div class="progress" style="margin-top: -30px" [hidden]="!bar">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          aria-valuenow="50"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          style="width: 50%"
+        ></div>
+      </div>
+    </div>
+    <div class="container info-form" *ngIf="!detailActive">
+      <div class="d-none d-md-block" style="display: inline-block; width: 100%">
+        <button
+          (click)="enable_details()"
+          align="right"
+          style="float: right; margin: 0px"
+          class="btn btn-light"
+          [disabled]="detailFlag ? false : true"
+        >
+          Detail >
+        </button>
+        <br />
+      </div>
+      <div class="d-block d-md-none position-absolute top-40 end-0">
+        <button
+          (click)="enable_details()"
+          align="right"
+          style="float: right; margin: 0px"
+          class="btn btn-light"
+          [disabled]="detailFlag ? false : true"
+        >
+          Detail >
+        </button>
+      </div>
+      <div [@flyInOut]>
+        <div class="d-none d-md-block">
+          <br />
+          <br />
+          <table class="table table-dark table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Shipping</th>
+                <th scope="col">Zip</th>
+                <th scope="col">Wish List</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container
+                *ngFor="
+                  let responsedItem of searchResult
+                    | paginate
+                      : {
+                          id: 'my-pagination',
+                          itemsPerPage: 10,
+                          currentPage: p
+                        };
+                  let i = index
+                "
+              >
+                <!-- [ngClass]="{
+                'table-light': selectedItemId === responsedItem.itemId
+              }" -->
+                <!-- [style.background-color]="
+                    selectedItemId === responsedItem.itemId ? 'white' : ''
+                  " -->
+                <tr
+                  [ngClass]="{
+                    'table-secondary': selectedItemId === responsedItem.itemId
+                  }"
+                >
+                  <th
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                    scope="row"
+                  >
+                    {{ i + 10 * (p - 1) + 1 }}
+                  </th>
+                  <td (click)="openPhoto(responsedItem.galleryURL)">
+                    <img
+                      [src]="responsedItem.galleryURL"
+                      style="height: 110px; width: 100px"
+                    />
+                  </td>
+                  <td>
+                    <a
+                      (click)="
+                        showDetail(
+                          responsedItem.itemId,
+                          responsedItem.title,
+                          responsedItem
+                        )
+                      "
+                      href="#"
+                      matTooltip="{{ responsedItem.title }}"
+                      style="text-align: left"
+                    >
+                      {{ getTrimmedTitle(responsedItem.title) }}
+                    </a>
+                  </td>
+                  <td
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                  >
+                    ${{ responsedItem.currentPrice }}
+                  </td>
+                  <td
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                  >
+                    {{
+                      responsedItem.shippingServiceCost === "0.0"
+                        ? "Free Shipping"
+                        : "$" + responsedItem.shippingServiceCost
+                    }}
+                  </td>
+                  <!-- Updated this line as it seems more relevant -->
+                  <td
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                  >
+                    {{ responsedItem.postalCode }}
+                  </td>
+                  <!-- Using 'location' as 'postalCode' was not part of the response structure -->
+                  <td>
+                    <!-- *ngIf="isAbsent2(responsedItem.itemId)" -->
+                    <button
+                      *ngIf="!isPresentMap.get(responsedItem.itemId)"
+                      (click)="addTowish(responsedItem)"
+                      class="btn btn-light"
+                    >
+                      <i
+                        class="material-icons"
+                        style="
+                          color: black;
+                          vertical-align: middle;
+                          padding-left: 0px;
+                        "
+                        >add_shopping_cart</i
+                      >
+                    </button>
+                    <!-- *ngIf="isPresent2(responsedItem.itemId)" -->
+                    <button
+                      *ngIf="isPresentMap.get(responsedItem.itemId)"
+                      (click)="removeFromWish(responsedItem)"
+                      class="btn btn-light"
+                    >
+                      <i
+                        class="material-icons"
+                        style="
+                          vertical-align: middle;
+                          padding-left: 0px;
+                          color: goldenrod;
+                        "
+                        >remove_shopping_cart</i
+                      >
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-center">
+            <pagination-controls
+              id="my-pagination"
+              (pageChange)="p = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+        <div class="d-block d-md-none">
+          <br />
+          <table
+            class="table table-dark table-striped table-hover"
+            style="width: 1000px"
+          >
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Shipping</th>
+                <th scope="col">Zip</th>
+                <th scope="col">Wish List</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container
+                *ngFor="
+                  let responsedItem of searchResult
+                    | paginate
+                      : {
+                          id: 'my-pagination',
+                          itemsPerPage: 10,
+                          currentPage: p
+                        };
+                  let i = index
+                "
+              >
+                <tr
+                  [ngClass]="{
+                    'table-secondary': selectedItemId === responsedItem.itemId
+                  }"
+                >
+                  <th
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                    scope="row"
+                  >
+                    {{ i + 10 * (p - 1) + 1 }}
+                  </th>
+                  <td (click)="openPhoto(responsedItem.galleryURL)">
+                    <img
+                      [src]="responsedItem.galleryURL"
+                      style="height: 110px; width: 110px"
+                    />
+                  </td>
+                  <td>
+                    <a
+                      (click)="
+                        showDetail(
+                          responsedItem.itemId,
+                          responsedItem.title,
+                          responsedItem
+                        )
+                      "
+                      href="#"
+                      matTooltip="{{ responsedItem.title }}"
+                      style="text-align: left"
+                    >
+                      {{ getTrimmedTitle(responsedItem.title) }}
+                    </a>
+                  </td>
+                  <td
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                  >
+                    ${{ responsedItem.currentPrice }}
+                  </td>
+                  <td
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                  >
+                    {{
+                      responsedItem.shippingServiceCost === "0.0"
+                        ? "Free Shipping"
+                        : "$" + responsedItem.shippingServiceCost
+                    }}
+                  </td>
+                  <!-- Updated this line as it seems more relevant -->
+                  <td
+                    [style.color]="
+                      selectedItemId === responsedItem.itemId ? 'white' : ''
+                    "
+                  >
+                    {{ responsedItem.postalCode }}
+                  </td>
+                  <!-- Using 'location' as 'postalCode' was not part of the response structure -->
+                  <td>
+                    <!-- *ngIf="isAbsent(responsedItem.itemId)" -->
+                    <button
+                      *ngIf="!isPresentMap.get(responsedItem.itemId)"
+                      (click)="addTowish(responsedItem)"
+                      class="btn btn-light"
+                    >
+                      <i
+                        class="material-icons"
+                        style="
+                          color: black;
+                          vertical-align: middle;
+                          padding-left: 0px;
+                        "
+                        >add_shopping_cart</i
+                      >
+                    </button>
+                    <!-- *ngIf="isPresent(responsedItem.itemId)" -->
+                    <button
+                      *ngIf="isPresentMap.get(responsedItem.itemId)"
+                      (click)="removeFromWish(responsedItem)"
+                      class="btn btn-light"
+                    >
+                      <i
+                        class="material-icons"
+                        style="
+                          vertical-align: middle;
+                          padding-left: 0px;
+                          color: goldenrod;
+                        "
+                        >remove_shopping_cart</i
+                      >
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-center">
+            <pagination-controls
+              id="my-pagination"
+              (pageChange)="p = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!bar && detailActive" [@flyInOut]>
+      <div *ngIf="productDetails" class="container info-form">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+          "
+        >
+          <b> {{ productTitle }} </b>
+        </div>
+        <div>
+          <div
+            style="width: 50%; display: inline-block; margin: auto"
+            align="left"
+          >
+            <button
+              class="btn btn-light"
+              style="height: 40px"
+              (click)="enable_list()"
+            >
+              < List
+            </button>
+          </div>
+          <div style="width: 50%; display: inline-block" align="right">
+            <script>
+              window.fbAsyncInit = function () {
+                FB.init({
+                  appId: "368802450377566",
+                  autoLogAppEvents: true,
+                  xfbml: true,
+                  version: "v3.2",
+                });
+              };
+            </script>
+            <script
+              async
+              defer
+              src="https://connect.facebook.net/en_US/sdk.js"
+            ></script>
+            <!-- href="http://www.facebook.com/sharer.php?u= {{
+              currentPhoto
+            }}&quote=Buy {{ productTitle }} + at + ${{
+              currentPrice
+            }} + from link below" -->
+            <a target="_blank" [href]="getShareLink(currentPhoto, productTitle)"
+              ><button
+                class="btn btn-light"
+                name="addtolist"
+                style="
+                  height: 40px;
+                  width: 40px;
+                  color: black;
+                  background-image: url('https://storage.googleapis.com/download/storage/v1/b/around_2/o/759c4d9e-2181-4c97-adcd-68a5c0b367a0?generation=1699180054848342&alt=media');
+                  background-size: cover;
+                  display: inline-block;
+                  margin-left: 10px;
+                "
+              ></button>
+            </a>
+            <button
+              *ngIf="!isPresentMap.get(currentId)"
+              (click)="addTowish(currentData)"
+              class="btn btn-light"
+              name="addtolist"
+            >
+              <i
+                class="material-icons"
+                style="color: black; vertical-align: middle; padding-left: 0px"
+                >add_shopping_cart</i
+              >
+            </button>
+            <button
+              *ngIf="isPresentMap.get(currentId)"
+              (click)="removeFromWish(currentData)"
+              class="btn btn-light"
+              name="addtolist"
+            >
+              <i
+                class="material-icons"
+                style="
+                  vertical-align: middle;
+                  padding-left: 0px;
+                  color: goldenrod;
+                "
+                >remove_shopping_cart</i
+              >
+            </button>
+          </div>
+
+          <div
+            style="margin-top: 5px; color: black; border-bottom: 1px solid #ddd"
+          >
+            <ul class="nav justify-content-end">
+              <li
+                class="nav-item rounded"
+                *ngFor="let tab of tabsEnabled; let i = index"
+                (click)="activate(i); $event.preventDefault()"
+                [style.background]="tabsEnabled[i] ? 'black' : 'white'"
+                [style.color]="tabsEnabled[i] ? 'white' : 'black'"
+              >
+                <!-- <a
+                  class="nav-link"
+                  href="#"
+                  [style.color]="tabsEnabled[i] ? 'white' : 'black'"
+                  >{{ tabDisplayNames[i] }}</a
+                > -->
+                <button
+                  type="button"
+                  class="nav-link rounded"
+                  [ngClass]="{ active: tabsEnabled[i] }"
+                  [ngStyle]="{
+                    'background-color': tabsEnabled[i] ? 'black' : 'white',
+                    color: tabsEnabled[i] ? 'white' : 'black'
+                  }"
+                >
+                  {{ tabDisplayNames[i] }}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div
+      *ngIf="
+        productDetailsDisabled ||
+        shipNotFound ||
+        sellerNotFound ||
+        similarProductsNotFound
+      "
+      style="
+        background-color: lightyellow;
+        color: orange;
+        border-color: orange;
+        border: 1px;
+      "
+      class="container info-form"
+    >
+      <p>No Records</p>
+    </div> -->
+
+      <div *ngIf="productDetails && tabsEnabled[0]">
+        <div
+          *ngIf="productDetailsDisabled"
+          style="
+            background-color: lightyellow;
+            color: orange;
+            border-color: orange;
+            border: 1px;
+            margin-top: -30px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          "
+          class="container info-form"
+        >
+          <p>No Records</p>
+        </div>
+        <app-product-details
+          *ngIf="!productDetailsDisabled"
+          [productDetails]="productDetails"
+        ></app-product-details>
+      </div>
+
+      <div *ngIf="productPhotos && tabsEnabled[1]">
+        <div
+          *ngIf="productPhotos && productPhotosNotFound"
+          style="
+            background-color: lightyellow;
+            color: orange;
+            border-color: orange;
+            border: 1px;
+            margin-top: -30px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          "
+          class="container info-form"
+        >
+          <p>No Records</p>
+        </div>
+        <app-photos
+          *ngIf="!productPhotosNotFound"
+          [productPhotos]="productPhotos"
+        ></app-photos>
+      </div>
+
+      <div *ngIf="productDetails && tabsEnabled[2]">
+        <div
+          *ngIf="shipNotFound"
+          style="
+            background-color: lightyellow;
+            color: orange;
+            border-color: orange;
+            border: 1px;
+            margin-top: -30px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          "
+          class="container info-form"
+        >
+          <p>No Records</p>
+        </div>
+        <app-shipping
+          *ngIf="!shipNotFound"
+          [shippingDetails]="productInfo"
+        ></app-shipping>
+      </div>
+
+      <div *ngIf="productDetails && tabsEnabled[3]">
+        <div
+          *ngIf="sellerNotFound"
+          style="
+            background-color: lightyellow;
+            color: orange;
+            border-color: orange;
+            border: 1px;
+            margin-top: -30px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          "
+          class="container info-form"
+        >
+          <p>No Records</p>
+        </div>
+        <app-seller
+          *ngIf="!sellerNotFound"
+          [sellerDetails]="productInfo"
+        ></app-seller>
+      </div>
+
+      <div *ngIf="similarProducts && tabsEnabled[4]">
+        <div
+          *ngIf="similarProductsNotFound"
+          style="
+            background-color: lightyellow;
+            color: orange;
+            border-color: orange;
+            border: 1px;
+            margin-top: -30px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          "
+          class="container info-form"
+        >
+          <p>No Records</p>
+        </div>
+        <app-simillar-products
+          *ngIf="!similarProductsNotFound"
+          [similarProducts]="similarProducts"
+        ></app-simillar-products>
+      </div>
+    </div>
+
+    <!-- The details section and other components will follow -->
+  </body>
+</html>

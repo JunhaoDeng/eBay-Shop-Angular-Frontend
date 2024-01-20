@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic Bootstrap Template</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </head>
+  <body style="margin-top: 30px">
+    <div class="container info-form" *ngIf="!detailActive">
+      <div class="d-flex justify-content-end mb-3">
+        <button
+          (click)="enable_details()"
+          class="btn btn-info"
+          [disabled]="detailFlag"
+        >
+          Details >
+        </button>
+      </div>
+      <div [@flyInOut]>
+        <table class="table table-dark table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Image</th>
+              <th scope="col">Title</th>
+              <th scope="col">Price</th>
+              <th scope="col">Shipping</th>
+              <th scope="col">Zip</th>
+              <th scope="col">Seller</th>
+              <th scope="col">Wish List</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container
+              *ngFor="let rowdata of resultTable | paginate: {id : 'my-pagination', itemsPerPage:10, currentPage:p};  let i = index"
+            >
+              <tr>
+                <th scope="row">{{(i+10*(p-1))+1}}</th>
+                <td>
+                  <img
+                    [src]="rowdata.galleryURL"
+                    style="height: 100px; width: 100px"
+                  />
+                </td>
+                <td>
+                  <a
+                    (click)="showDetail(rowdata.itemId[0],rowdata.title[0], rowdata)"
+                    href="#"
+                    >{{ rowdata.title[0] | slice:0:35 }}...</a
+                  >
+                </td>
+                <td>
+                  ${{ rowdata.sellingStatus[0].currentPrice[0].__value__ }}
+                </td>
+                <td>{{ rowdata.shippingInfo[0].shippingType[0] }}</td>
+                <td>{{ rowdata.postalCode[0] }}</td>
+                <td>{{ rowdata.sellerInfo[0].sellerUserName[0] }}</td>
+                <td>
+                  <!-- !itemPresence[responsedItem.itemId] -->
+                  <button
+                    *ngIf="isAbsent(rowdata.itemId[0])"
+                    (click)="addTowish(rowdata)"
+                  >
+                    <i class="material-icons" style="color: black"
+                      >add_shopping_cart</i
+                    >
+                  </button>
+                  <button
+                    *ngIf="isPresent(rowdata.itemId[0])"
+                    (click)="removeFromWish(rowdata)"
+                  >
+                    <i class="material-icons" style="color: goldenrod"
+                      >remove_shopping_cart</i
+                    >
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+          <pagination-controls
+            id="my-pagination"
+            (pageChange)="p = $event"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+    <!-- The details section and other components will follow -->
+  </body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body style="margin-top: 5px">
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Product Image</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ngb-carousel [interval]="0">
+          <ng-template
+            ngbSlide
+            *ngFor="let url of productDetails.Photo; let isFirst = first"
+          >
+            <a [href]="url" target="_blank">
+              <img
+                [src]="url"
+                class="d-block w-100"
+                style="width: 430px; height: 430px; border: 5px solid black"
+              />
+            </a>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.close('Close click')"
+        >
+          Close
+        </button>
+      </div>
+    </ng-template>
+
+    <!-- <ng-template #content let-modal>
+      <p>wohenhao1</p>
+    </ng-template> -->
+
+    <div id="container">
+      <div class="d-none d-md-block">
+        <div style="text-align: center" class="container info-form">
+          <div>
+            <table width="100%" class="table table-dark table-striped">
+              <tbody>
+                <tr *ngIf="productDetails.Photo">
+                  <td style="width: 20%; text-align: left">Product Images</td>
+                  <td style="width: 80%; text-align: left">
+                    <p style="color: rgb(74, 170, 202)" (click)="open(content)">
+                      View Product Images Here
+                    </p>
+                  </td>
+                </tr>
+                <!-- <tr *ngIf="productDetails.Subtitle">
+                  <td style="width: 20%; text-align: left">Subtitle</td>
+                  <td style="width: 80%; text-align: left">
+                    {{ productDetails.Subtitle }}
+                  </td>
+                </tr> -->
+                <tr *ngIf="productDetails.Price">
+                  <td style="width: 20%; text-align: left">Price</td>
+                  <td style="width: 80%; text-align: left">
+                    {{ productDetails.Price }}
+                  </td>
+                </tr>
+                <tr *ngIf="productDetails.Location">
+                  <td style="width: 20%; text-align: left">Location</td>
+                  <td style="width: 80%; text-align: left">
+                    {{ productDetails.Location }}
+                  </td>
+                </tr>
+                <tr *ngIf="productDetails['Return Policy(US)']">
+                  <td style="width: 20%; text-align: left">Return Policy</td>
+                  <td style="width: 80%; text-align: left">
+                    {{ productDetails["Return Policy(US)"] }}
+                  </td>
+                </tr>
+                <tr
+                  *ngFor="
+                    let item of productDetails.ItemSpecifics.NameValueList
+                  "
+                >
+                  <td style="width: 20%; text-align: left">{{ item.Name }}</td>
+                  <td style="width: 80%; text-align: left">{{ item.Value }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-block d-md-none">
+      <div style="text-align: center" class="container info-form">
+        <div>
+          <table width="100%" class="table table-dark table-striped">
+            <tbody>
+              <tr *ngIf="productDetails.Photo">
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  Product Images
+                </td>
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  <p style="color: rgb(74, 170, 202)" (click)="open(content)">
+                    View Product Images Here
+                  </p>
+                </td>
+              </tr>
+              <!-- <tr *ngIf="productDetails.Subtitle">
+                  <td style="width: 100%; text-align: left">Subtitle</td>
+                  <td style="width: 100%; text-align: left">
+                    {{ productDetails.Subtitle }}
+                  </td>
+                </tr> -->
+              <tr *ngIf="productDetails.Price">
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  Price
+                </td>
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  {{ productDetails.Price }}
+                </td>
+              </tr>
+              <tr *ngIf="productDetails.Location">
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  Location
+                </td>
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  {{ productDetails.Location }}
+                </td>
+              </tr>
+              <tr *ngIf="productDetails['Return Policy(US)']">
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  Return Policy
+                </td>
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  {{ productDetails["Return Policy(US)"] }}
+                </td>
+              </tr>
+              <tr
+                *ngFor="let item of productDetails.ItemSpecifics.NameValueList"
+              >
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  {{ item.Name }}
+                </td>
+                <td style="width: 100%; text-align: left" class="vertical-tds">
+                  {{ item.Value }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <style>
+    /* 覆盖默认的左右切换按钮样式 */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-image: none; /* 移除默认背景图 */
+      /* 下面添加您想要的样式，例如 */
+      width: 30px;
+      height: 30px;
+      border: 1px solid black;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel-control-prev {
+      left: -15px; /* 根据需要调整位置 */
+    }
+
+    .carousel-control-next {
+      right: -15px; /* 根据需要调整位置 */
+    }
+  </style>
+</html>

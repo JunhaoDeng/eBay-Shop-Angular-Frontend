@@ -1,0 +1,16 @@
+runtime: nodejs18
+instance_class: F1
+automatic_scaling:
+  target_cpu_utilization: 0.65
+entrypoint: node server.js
+
+# env_variables:
+#   BUCKET_NAME: "your-ng-app-bucket"
+
+handlers:
+  - url: /
+    static_files: dist/ebay-shop/index.html
+    upload: dist/ebay-shop/index.html
+
+  - url: /
+    static_dir: dist/ebay-shop

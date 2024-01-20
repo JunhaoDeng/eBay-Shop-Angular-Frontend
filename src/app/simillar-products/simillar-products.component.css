@@ -1,0 +1,5 @@
+table {
+  border-collapse: separate;
+  border-spacing: 0 10px; /* The first value is horizontal spacing, the second is vertical */
+  background-color: transparent;
+}

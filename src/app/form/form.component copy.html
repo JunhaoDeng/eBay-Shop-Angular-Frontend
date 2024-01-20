@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <title>Product Search</title>
+    <style>
+      input.ng-invalid.ng-touched {
+        border: 1px solid red;
+      }
+      .container {
+        background-color: rgb(33, 37, 41);
+        color: white;
+        padding: 20px;
+      }
+      /* form {
+        padding-left: 25%; /* 可根据需要调整这个值 */
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2 style="margin-top: 10px; padding-left: 25.5%; padding-bottom: 20px">
+        Product Search
+      </h2>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form #f="ngForm" (submit)="onSubmit($event)">
+            <!-- <div class="mx-auto" style="max-width: 1000px"> -->
+            <div class="form-group row">
+              <label for="keyword" class="col-md-3 col-xs-3">
+                Keyword<span style="color: red">*</span>
+              </label>
+              <div class="col-md-7 col-xs-7">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="keyword"
+                  name="keyword"
+                  placeholder="Enter Product Name (eg. iPhone 8)"
+                  [(ngModel)]="model.keyword"
+                  #keyword="ngModel"
+                  pattern="^\s*(\w.*)$"
+                  minlength="1"
+                  required
+                />
+                <ng-container
+                  *ngIf="keyword?.errors && (keyword.dirty || keyword.touched)"
+                >
+                  <div *ngIf="keyword.errors?.['required']">
+                    <span style="color: red">Please enter a keyword.</span>
+                  </div>
+                  <div *ngIf="keyword.errors?.['pattern']">
+                    <span style="color: red"
+                      >Please enter a valid keyword.</span
+                    >
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-xs-3" for="category">Category</label>
+              <div class="col-md-3 col-xs-3">
+                <select
+                  class="form-control form-control-sm"
+                  id="category-select"
+                  [(ngModel)]="model.category"
+                  #category="ngModel"
+                  name="category"
+                  style="color: #6c757d; font-size: 16px"
+                >
+                  <option value="-1" id="-1">All Categories</option>
+                  <option value="550" id="550">Art</option>
+                  <option value="2984" id="2984">Baby</option>
+                  <option value="267" id="267">Books</option>
+                  <option value="11450" id="11450">
+                    Clothing, Shoes & Accessories
+                  </option>
+                  <option value="58058" id="58058">
+                    Computers/Tablets & Networking
+                  </option>
+                  <option value="26395" id="26395">Health & Beauty</option>
+                  <option value="11233" id="11233">Music</option>
+                  <option value="1249" id="1249">Video Games & Consoles</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-xs-3" for="Condition">Condition</label>
+              <div class="col-md-6 col-xs-6">
+                <label class="form-check form-check-inline">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    name="new"
+                    [(ngModel)]="model.new"
+                    #new="ngModel"
+                    id="new"
+                  />
+                  New
+                </label>
+                <label class="form-check form-check-inline">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    name="used"
+                    id="used"
+                    [(ngModel)]="model.used"
+                    #used="ngModel"
+                  />
+                  Used
+                </label>
+                <label class="form-check form-check-inline">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    name="unspecified"
+                    id="unspecified"
+                    [(ngModel)]="model.unspecified"
+                    #unspecified="ngModel"
+                  />
+                  Unspecified
+                </label>
+              </div>
+            </div>
+
+            <!-- ... other form elements ... -->
+            <div class="form-group row">
+              <label class="col-md-3 col-xs-3" for="shippingOption"
+                >Shipping Options</label
+              >
+              <div class="col-md-6 col-xs-6">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="local"
+                    [(ngModel)]="model.local"
+                    #local="ngModel"
+                    id="local"
+                  />
+                  Local Pickup
+                </label>
+                &nbsp; &nbsp;
+                <label>
+                  <input
+                    type="checkbox"
+                    name="free"
+                    [(ngModel)]="model.free"
+                    #free="ngModel"
+                    id="free"
+                  />
+                  Free Shipping
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-sm-3" for="distance"
+                >Distance (Miles)</label
+              >
+              <div class="col-md-3 col-xs-3">
+                <input
+                  class="form-control form-control-sm"
+                  type="number"
+                  id="distance"
+                  name="distance"
+                  [(ngModel)]="model.distance"
+                  style="color: #6c757d; font-size: 16px"
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-xs-3" for="from"
+                >From<span style="color: red">*</span></label
+              >
+              <div class="col-md-7 col-xs-7">
+                <label>
+                  <input
+                    type="radio"
+                    name="fromLocation"
+                    [(ngModel)]="model.fromLocation"
+                    #current="ngModel"
+                    value="current"
+                    [checked]="model.fromLocation === 'current'"
+                    (ngModelChange)="onFromLocationChange()"
+                  />
+                  ‘Current Location’
+                </label>
+                <!-- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -->
+                <br />
+                <label>
+                  <input
+                    type="radio"
+                    name="fromLocation"
+                    [(ngModel)]="model.fromLocation"
+                    #other="ngModel"
+                    value="other"
+                  />
+                  Other. Please specify zip code:
+                </label>
+                <input
+                  type="text"
+                  class="form-control mt-2"
+                  id="zip"
+                  name="zip"
+                  [(ngModel)]="model.zip"
+                  #zip="ngModel"
+                  placeholder="Enter ZIP Code"
+                  pattern="^\d{5}(-\d{4})?$"
+                  required
+                  [disabled]="model.fromLocation !== 'other'"
+                />
+                <ng-container
+                  *ngIf="
+                    zip?.errors &&
+                    (model.fromLocation === 'other' || zip.dirty || zip.touched)
+                  "
+                >
+                  <div *ngIf="zip.errors?.['required']">
+                    <span style="color: red">Please enter a zip code.</span>
+                  </div>
+                  <div *ngIf="zip.errors?.['pattern']">
+                    <span style="color: red"
+                      >Please enter a valid zip code.</span
+                    >
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-light mr-3"
+              [disabled]="
+                keyword.errors || (model.fromLocation === 'other' && zip.errors)
+              "
+            >
+              <i class="material-icons" style="vertical-align: middle"
+                >search</i
+              >
+              Search
+            </button>
+            <button
+              (click)="
+                clearAll(f); $event.stopPropagation(); $event.preventDefault()
+              "
+              class="btn btn-light"
+            >
+              <i class="material-icons" style="vertical-align: middle"
+                >clear_all</i
+              >
+              Clear
+            </button>
+            <!-- </div> -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5">
+      <h4>Form Data:</h4>
+      <ul>
+        <li><strong>Keyword:</strong> {{ model.keyword }}</li>
+        <li><strong>Category:</strong> {{ model.category }}</li>
+        <li><strong>New:</strong> {{ model.new }}</li>
+        <li><strong>Used:</strong> {{ model.used }}</li>
+        <li><strong>Unspecified:</strong> {{ model.unspecified }}</li>
+        <li><strong>Local Pickup:</strong> {{ model.local }}</li>
+        <li><strong>Free Shipping:</strong> {{ model.free }}</li>
+        <li><strong>Distance:</strong> {{ model.distance }}</li>
+        <li><strong>From Location:</strong> {{ model.fromLocation }}</li>
+        <li><strong>ZIP Code:</strong> {{ model.zip }}</li>
+        <li><strong>MyZIP Code:</strong> {{ model.myzip }}</li>
+        <li><strong>SearchResult:</strong>{{ searchResult }}</li>
+      </ul>
+    </div>
+
+    <!-- Include necessary JS files -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

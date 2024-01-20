@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic Bootstrap Template</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </head>
+  <body style="margin-top: 5px">
+    <div class="d-none d-md-block">
+      <div class="container info-form" style="height: 80%">
+        <div
+          id="first-bar"
+          class="column"
+          style="
+            display: inline-block;
+            flex: 33%;
+            max-width: 33%;
+            vertical-align: top;
+            padding-top: 0px;
+            height: 100%;
+            padding-right: 4px;
+            padding-bottom: 0px;
+            padding-left: 4px;
+            height: 100%;
+          "
+        >
+          <a
+            href="{{ productPhotos.items[0].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[0]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[0].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+          <a
+            href="{{ productPhotos.items[3].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[3]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[3].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+        </div>
+
+        <div
+          id="second-bar"
+          class="column"
+          style="
+            display: inline-block;
+            flex: 33%;
+            max-width: 33%;
+            vertical-align: top;
+            padding-top: 0px;
+            padding-right: 4px;
+            padding-bottom: 0px;
+            padding-left: 4px;
+            height: 100%;
+          "
+        >
+          <a
+            href="{{ productPhotos.items[1].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[1]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[1].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+
+          <a
+            href="{{ productPhotos.items[4].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[4]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[4].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+
+          <a
+            href="{{ productPhotos.items[6].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[6]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[6].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+        </div>
+
+        <div
+          id="third-bar"
+          class="column"
+          style="
+            display: inline-block;
+            flex: 33%;
+            max-width: 33%;
+            vertical-align: top;
+            padding-top: 0px;
+            padding-right: 4px;
+            padding-bottom: 0px;
+            padding-left: 4px;
+            height: 100%;
+          "
+        >
+          <a
+            href="{{ productPhotos.items[2].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[2]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[2].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+          <a
+            href="{{ productPhotos.items[5].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[5]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[5].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+          <a
+            href="{{ productPhotos.items[7].link }}"
+            style="box-sizing: border-box"
+            *ngIf="productPhotos.items[7]"
+            target="_blank"
+          >
+            <img
+              src="{{ productPhotos.items[7].link }}"
+              style="
+                width: 100%;
+                margin: 7px;
+                border-color: black;
+                border-style: solid;
+                border-width: 10px;
+              "
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-block d-md-none">
+      <div class="container info-form" style="height: 80%">
+        <div
+          id="first-bar"
+          class="column"
+          style="
+            display: inline-block;
+            flex: 100%;
+            max-width: 100%;
+            vertical-align: top;
+            height: 100%;
+          "
+        >
+          <ng-container
+            *ngFor="let photo of productPhotos.items; let i = index"
+          >
+            <a
+              href="{{ photo.link }}"
+              style="box-sizing: border-box"
+              *ngIf="photo"
+              target="_blank"
+            >
+              <img
+                src="{{ photo.link }}"
+                style="
+                  width: 100%;
+                  margin-bottom: 7px;
+                  border: 10px solid black; /* simplified border styling */
+                "
+              />
+            </a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

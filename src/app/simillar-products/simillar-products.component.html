@@ -1,0 +1,195 @@
+<br />
+<div class="container info-form">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-auto">
+        <select
+          class="form-select"
+          name="sortcategoryselect"
+          id="sortcategoryselect"
+          [(ngModel)]="model.selectedCriteria"
+          (change)="onSortChange()"
+        >
+          <option selected value="default">Default</option>
+          <option value="name">Product Name</option>
+          <option value="days">Days Left</option>
+          <option value="price">Price</option>
+          <option value="ship">Shipping Cost</option>
+        </select>
+      </div>
+      <!-- *ngIf="model.selectedCriteria != 'default'"  -->
+      <div class="col-md-auto">
+        <select
+          [disabled]="model.selectedCriteria == 'default'"
+          class="form-select"
+          [(ngModel)]="model.selectedDirection"
+          id="selectedDirection"
+          (change)="onSortChange()"
+          name="selectedDirection"
+        >
+          <option selected value="Ascending">Ascending</option>
+          <option value="Descending">Descending</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <div class="d-none d-md-block">
+    <table width="100%" class="table table-dark">
+      <tbody>
+        <tr *ngFor="let rowdata of firstHalf">
+          <td style="width: 10%; text-align: left">
+            <img
+              src="{{ rowdata.imageURL }}"
+              style="height: 150px; width: 150px"
+            />
+          </td>
+          <td style="width: 60%; text-align: left">
+            <a
+              style="color: #146077; margin-bottom: 10px; display: inline-block"
+              [href]="rowdata.viewItemURL"
+              target="_blank"
+              >{{ rowdata.title }}</a
+            >
+            <p style="color: #4abc34">
+              Price: ${{ rowdata.buyItNowPrice.__value__ }}
+            </p>
+            <p style="color: #c8c127">
+              Shipping Cost: ${{ rowdata.shippingCost.__value__ }}
+            </p>
+            <p style="color: white">
+              Days Left: {{ getDaysLeft(rowdata.timeLeft) }}
+            </p>
+          </td>
+        </tr>
+        <ng-container *ngIf="show">
+          <tr *ngFor="let rowdata of secondHalf">
+            <td style="width: 10%; text-align: left">
+              <img
+                src="{{ rowdata.imageURL }}"
+                style="height: 100px; width: 80px"
+              />
+            </td>
+            <td style="width: 60%; text-align: left">
+              <a
+                style="
+                  color: #146077;
+                  margin-bottom: 10px;
+                  display: inline-block;
+                "
+                [href]="rowdata.viewItemURL"
+                target="_blank"
+                >{{ rowdata.title }}</a
+              >
+              <p style="color: #4abc34">
+                Price:{{ rowdata.buyItNowPrice.__value__ }}
+              </p>
+              <p style="color: #c8c127">
+                Shipping Cost: ${{ rowdata.shippingCost.__value__ }}
+              </p>
+              <p style="color: white">
+                Days Left: {{ getDaysLeft(rowdata.timeLeft) }}
+              </p>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+
+    <div style="color: white; text-align: center" class="container info-form">
+      <button
+        *ngIf="!show"
+        class="btn btn-primary navbar-btn align-content-between"
+        style="font-size: 20px; background-color: black; color: white"
+        (click)="showMore()"
+      >
+        Show More
+      </button>
+      <button
+        *ngIf="show"
+        class="btn btn-primary navbar-btn align-content-between"
+        style="font-size: 20px; background-color: black; color: white"
+        (click)="hide()"
+      >
+        Show Less
+      </button>
+    </div>
+  </div>
+
+  <div class="d-block d-md-none">
+    <table width="100%" class="table table-dark">
+      <tbody>
+        <tr *ngFor="let rowdata of firstHalf">
+          <td style="width: 100%; text-align: left">
+            <img
+              src="{{ rowdata.imageURL }}"
+              style="height: 150px; width: 150px; margin-bottom: 10px"
+            />
+            <br />
+            <a
+              style="color: #146077"
+              [href]="rowdata.viewItemURL"
+              target="_blank"
+              >{{ rowdata.title }}</a
+            >
+            <p style="color: #4abc34">
+              Price: ${{ rowdata.buyItNowPrice.__value__ }}
+            </p>
+            <p style="color: #c8c127; margin-top: -15px">
+              Shipping Cost: ${{ rowdata.shippingCost.__value__ }}
+            </p>
+            <p style="color: white; margin-top: -15px">
+              Days Left: {{ getDaysLeft(rowdata.timeLeft) }}
+            </p>
+          </td>
+        </tr>
+        <ng-container *ngIf="show">
+          <tr *ngFor="let rowdata of secondHalf">
+            <td style="width: 100%; text-align: left">
+              <img
+                src="{{ rowdata.imageURL }}"
+                style="height: 150px; width: 150px; margin-bottom: 10px"
+              />
+              <br />
+              <a
+                style="color: #146077"
+                [href]="rowdata.viewItemURL"
+                target="_blank"
+                >{{ rowdata.title }}</a
+              >
+              <p style="color: #4abc34">
+                Price: ${{ rowdata.buyItNowPrice.__value__ }}
+              </p>
+              <p style="color: #c8c127; margin-top: -15px">
+                Shipping Cost: ${{ rowdata.shippingCost.__value__ }}
+              </p>
+              <p style="color: white; margin-top: -15px">
+                Days Left: {{ getDaysLeft(rowdata.timeLeft) }}
+              </p>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+
+    <div style="color: white; text-align: center" class="container info-form">
+      <button
+        *ngIf="!show"
+        class="btn btn-primary navbar-btn align-content-between"
+        style="font-size: 20px; background-color: black; color: white"
+        (click)="showMore()"
+      >
+        Show More
+      </button>
+      <button
+        *ngIf="show"
+        class="btn btn-primary navbar-btn align-content-between"
+        style="font-size: 20px; background-color: black; color: white"
+        (click)="hide()"
+      >
+        Show Less
+      </button>
+    </div>
+  </div>
+</div>

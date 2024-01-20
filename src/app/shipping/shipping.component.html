@@ -1,0 +1,183 @@
+<body style="margin-top: 5px">
+  <div class="container info-form">
+    <div class="d-none d-md-block">
+      <table width="100%" class="table table-dark">
+        <tbody>
+          <!-- Shipping Cost Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Shipping Cost</td>
+            <td style="width: 70%; text-align: left">
+              {{ shippingServiceCost }}
+            </td>
+          </tr>
+
+          <!-- Shipping Locations Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Shipping Locations</td>
+            <td style="width: 70%; text-align: left">{{ shipToLocation }}</td>
+          </tr>
+
+          <!-- Handling Time Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Handling Time</td>
+            <td style="width: 70%; text-align: left">{{ handlingTime }}</td>
+          </tr>
+
+          <!-- Expedited Shipping Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Expedited Shipping</td>
+            <td style="width: 70%; text-align: left">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green"
+                *ngIf="isExpeditedShipping"
+                >done</i
+              >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red"
+                *ngIf="!isExpeditedShipping"
+                >clear</i
+              >
+            </td>
+          </tr>
+
+          <!-- One Day Shipping Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">One Day Shipping</td>
+            <td style="width: 70%; text-align: left">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green"
+                *ngIf="isOneDayShippingAvailable"
+                >done</i
+              >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red"
+                *ngIf="!isOneDayShippingAvailable"
+                >clear</i
+              >
+            </td>
+          </tr>
+
+          <!-- Return Accepted Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Return Accepted</td>
+            <td style="width: 70%; text-align: left">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green"
+                *ngIf="isReturnsAccepted"
+                >done</i
+              >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red"
+                *ngIf="!isReturnsAccepted"
+                >clear</i
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container info-form">
+    <div class="d-block d-md-none">
+      <table width="100%" class="table table-dark">
+        <tbody>
+          <!-- Shipping Cost Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Shipping Cost</td>
+          </tr>
+          <tr>
+            <td style="width: 70%; text-align: left">
+              {{ shippingServiceCost }}
+            </td>
+          </tr>
+
+          <!-- Shipping Locations Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Shipping Locations</td>
+          </tr>
+          <tr>
+            <td style="width: 70%; text-align: left">{{ shipToLocation }}</td>
+          </tr>
+
+          <!-- Handling Time Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Handling Time</td>
+          </tr>
+          <tr>
+            <td style="width: 70%; text-align: left">{{ handlingTime }}</td>
+          </tr>
+
+          <!-- Expedited Shipping Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Expedited Shipping</td>
+          </tr>
+          <tr>
+            <td style="width: 70%; text-align: left">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green"
+                *ngIf="isExpeditedShipping"
+                >done</i
+              >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red"
+                *ngIf="!isExpeditedShipping"
+                >clear</i
+              >
+            </td>
+          </tr>
+
+          <!-- One Day Shipping Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">One Day Shipping</td>
+          </tr>
+          <tr>
+            <td style="width: 70%; text-align: left">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green"
+                *ngIf="isOneDayShippingAvailable"
+                >done</i
+              >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red"
+                *ngIf="!isOneDayShippingAvailable"
+                >clear</i
+              >
+            </td>
+          </tr>
+
+          <!-- Return Accepted Row -->
+          <tr>
+            <td style="width: 30%; text-align: left">Return Accepted</td>
+          </tr>
+          <tr>
+            <td style="width: 70%; text-align: left">
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: green"
+                *ngIf="isReturnsAccepted"
+                >done</i
+              >
+              <i
+                class="material-icons"
+                style="font-size: 30px; color: red"
+                *ngIf="!isReturnsAccepted"
+                >clear</i
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
